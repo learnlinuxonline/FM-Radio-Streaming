@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>বাংলাদেশের রেডিও প্লেয়ার</title>
+  <style>
+    body {
+      background: #0f172a;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #38bdf8;
+      padding: 20px 0;
+      margin: 0;
+    }
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      padding: 0 20px;
+      margin-bottom: 10px;
+    }
+    .search-bar input {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+    }
+    .channels-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .channel-card {
+      background: #1e293b;
+      border-radius: 10px;
+      padding: 15px;
+      width: 140px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .channel-card:hover {
+      background: #334155;
+      transform: translateY(-5px);
+    }
+    .channel-icon {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border: 2px solid #38bdf8;
+    }
+    .channel-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    audio {
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+      display: block;
+    }
+    .now-playing {
+      text-align: center;
+      font-size: 16px;
+      margin-top: 10px;
+      color: #38bdf8;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📻 বাংলাদেশের রেডিও স্টেশন</h1>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="🔍 রেডিও খুঁজুন..." oninput="filterChannels()" />
+</div>
+
+<div class="channels-container" id="channelContainer">
+  <!-- রেডিও কার্ডগুলো এখানে জাভাস্ক্রিপ্ট দিয়ে যুক্ত হবে -->
+</div>
+
+<audio id="radioPlayer" controls autoplay></audio>
+<div class="now-playing" id="nowPlaying">একটি রেডিও সিলেক্ট করুন</div>
+
+<script>
+  const allRadios = [
+    {
+      name: "ABC Radio(89.2)",
+      stream: "http://node-04.zeno.fm/h7n8ug96eeruv",
+      logo: "https://upload.wikimedia.org/wikipedia/bn/thumb/d/d5/%E0%A6%8F%E0%A6%AC%E0%A6%BF%E0%A6%B8%E0%A6%BF_%E0%A6%B0%E0%A7%87%E0%A6%A1%E0%A6%BF%E0%A6%93%E0%A6%B0_%E0%A6%B2%E0%A7%8B%E0%A6%97%E0%A7%8B_%28%E0%A6%AA%E0%A7%81%E0%A6%B0%E0%A6%BE%E0%A6%A4%E0%A6%A8%29.svg/381px-%E0%A6%8F%E0%A6%AC%E0%A6%BF%E0%A6%B8%E0%A6%BF_%E0%A6%B0%E0%A7%87%E0%A6%A1%E0%A6%BF%E0%A6%93%E0%A6%B0_%E0%A6%B2%E0%A7%8B%E0%A6%97%E0%A7%8B_%28%E0%A6%AA%E0%A7%81%E0%A6%B0%E0%A6%BE%E0%A6%A4%E0%A6%A8%29.svg.png"
+    },
+    {
+      name: "Radio Today(89.6)",
+      stream: "http://node-03.zeno.fm/0zha3rfq02quv",
+      logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSwsPsZ8ydAQQ_Qq5CYuqdlhzCBze53_7NzCg&usqp=CAU"
+    },
+    {
+      name: "Bangladesh Betar Dhaka",
+      stream: "http://as3.digitalsynapsebd.com:8263/;stream.mp3",
+      logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTUmJx9jACLmDe3lkRYxo4AZcuxSuD6rIqbvw&usqp=CAU"
+    },
+    {
+      name: "Radio Foorti",
+      stream: "https://node-11.zeno.fm/f0bfdk2w34zuv",
+      logo: "https://dl.dropbox.com/s/etxv1fmhxeyl3oy/RadioLive.gif"
+    },
+    {
+      name: "Colours FM",
+      stream: "http://45.64.135.88:8000/stream1",
+      logo: "https://dl.dropbox.com/s/etxv1fmhxeyl3oy/RadioLive.gif"
+    },
+    {
+      name: "Jagoo FM",
+      stream: "http://128.199.184.111:12496/;stream/1",
+      logo: "https://dl.dropbox.com/s/etxv1fmhxeyl3oy/RadioLive.gif"
+    },
+    {
+      name: "FnF.FM Bangla",
+      stream: "http://eu6.fastcast4u.com:5099/;stream",
+      logo: "https://dl.dropbox.com/s/etxv1fmhxeyl3oy/RadioLive.gif"
+    },
+    {
+      name: "Traffic FM",
+      stream: "http://as3.digitalsynapsebd.com:8263/;stream.mp3",
+      logo: "https://dl.dropbox.com/s/etxv1fmhxeyl3oy/RadioLive.gif"
+    },
+    {
+      name: "Big FM",
+      stream: "http://sc-bb.1.fm:8017/;",
+      logo: "https://dl.dropbox.com/s/etxv1fmhxeyl3oy/RadioLive.gif"
+    },
+    {
+      name: "Awaj FM",
+      stream: "http://streamasiacdn.atc-labs.com/radioawaj.aac",
+      logo: "https://dl.dropbox.com/s/etxv1fmhxeyl3oy/RadioLive.gif"
+    },
+    {
+      name: "Suno FM 102",
+      stream: "http://51.255.235.165:5476/;stream.mp3",
+      logo: "https://dl.dropbox.com/s/etxv1fmhxeyl3oy/RadioLive.gif"
+    }
+  ];
+
+  const container = document.getElementById('channelContainer');
+  const player = document.getElementById('radioPlayer');
+  const nowPlaying = document.getElementById('nowPlaying');
+
+  function renderRadios(filter = '') {
+    container.innerHTML = '';
+    allRadios
+      .filter(r => r.name.toLowerCase().includes(filter.toLowerCase()))
+      .forEach(r => {
+        const card = document.createElement('div');
+        card.className = 'channel-card';
+        card.onclick = () => playRadio(r.stream, r.name);
+        card.innerHTML = `
+          <img class="channel-icon" src="${r.logo}" alt="${r.name}">
+          <div class="channel-title">${r.name}</div>
+        `;
+        container.appendChild(card);
+      });
+  }
+
+  function playRadio(streamURL, name) {
+    player.src = streamURL;
+    nowPlaying.textContent = `🔊 এখন চলছে: ${name}`;
+    player.play();
+  }
+
+  function filterChannels() {
+    const val = document.getElementById('searchInput').value;
+    renderRadios(val);
+  }
+
+  renderRadios();
+</script>
+
+</body>
+</html>
