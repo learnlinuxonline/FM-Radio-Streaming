@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChannelHub - Your Ultimate Radio Streaming Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #0d47a1;
+            --secondary: #f5f5f5;
+            --dark: #333;
+            --light: #fff;
+            --gray: #777;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--light);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo span {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 5px 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-container input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--light);
+            width: 100%;
+            padding: 8px;
+        }
+
+        .search-container input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-container i {
+            color: var(--light);
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .player-container {
+            background: var(--light);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .audio-container {
+            width: 100%;
+            background: #000;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .player-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .player-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .channel-info {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-top: 1px solid var(--secondary);
+        }
+
+        .channel-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+        }
+
+        .channel-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .channel-details h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .channel-details p {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--light);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--light);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: var(--light);
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background: var(--light);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-btn:hover {
+            background: var(--primary);
+            color: var(--light);
+            transform: translateY(-2px);
+        }
+
+        .category-btn.active {
+            background: var(--primary);
+            color: var(--light);
+        }
+
+        .channels-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .view-all {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .channel-card {
+            background: var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .channel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .channel-card-img {
+            height: 120px;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .channel-card-img img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+
+        .live-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--danger);
+            color: var(--light);
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .channel-card-content {
+            padding: 15px;
+        }
+
+        .channel-card-content h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .channel-card-content p {
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+            grid-column: 1 / -1;
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        footer {
+            background: var(--dark);
+            color: var(--light);
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            margin-bottom: 0.5rem;
+            display: block;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: var(--light);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #444;
+            color: #999;
+        }
+
+        .loading-indicator {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+        }
+
+        .loading-indicator i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stream-status {
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            display: none;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .volume-control i {
+            color: var(--light);
+        }
+
+        .volume-slider {
+            width: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            .channels-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .channel-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .controls {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-radio"></i>
+                <div>
+                    <h1>ChannelHub</h1>
+                    <span>Your Ultimate Radio Streaming Platform</span>
+                </div>
+            </div>
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search radio stations...">
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <i class="fas fa-radio"></i>
+                    <span id="totalStations">Loading...</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-list"></i>
+                    <span id="totalCategories">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="player-container">
+            <div class="audio-container">
+                <div class="player-placeholder">
+                    <i class="fas fa-play-circle"></i>
+                    <h3>Select a radio station to start streaming</h3>
+                    <p>Browse through our extensive collection of radio stations</p>
+                </div>
+                <audio id="audioPlayer" controls style="display: none;" class="audio-player">
+                    Your browser does not support the audio element.
+                </audio>
+                <div class="loading-indicator" id="loadingIndicator">
+                    <i class="fas fa-spinner"></i>
+                    <p>Loading stream...</p>
+                </div>
+                <div class="stream-status" id="streamStatus"></div>
+            </div>
+            <div class="channel-info">
+                <div class="channel-logo">
+                    <img id="currentStationLogo" src="" alt="Station Logo" style="display: none;">
+                    <i class="fas fa-radio" id="defaultLogoIcon" style="font-size: 1.5rem; color: #ccc;"></i>
+                </div>
+                <div class="channel-details">
+                    <h2 id="currentStationName">Welcome to ChannelHub Radio</h2>
+                    <p id="currentStationCategory">Select any radio station from the categories below</p>
+                </div>
+                <div class="controls">
+                    <button class="btn btn-primary" id="playBtn" style="display: none;">
+                        <i class="fas fa-play"></i> Play
+                    </button>
+                    <button class="btn btn-danger" id="stopBtn" style="display: none;">
+                        <i class="fas fa-stop"></i> Stop
+                    </button>
+                    <div class="volume-control">
+                        <i class="fas fa-volume-up"></i>
+                        <input type="range" min="0" max="1" step="0.01" value="0.5" class="volume-slider" id="volumeSlider">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="categories" id="categoriesContainer">
+            <!-- Categories will be dynamically generated -->
+        </div>
+
+        <div id="featuredStations" class="channels-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-star"></i> Featured Stations
+                </h2>
+                <a href="#" class="view-all">View All <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="channels-grid" id="featuredStationsContainer">
+                <!-- Featured stations will be dynamically generated -->
+            </div>
+        </div>
+
+        <div id="allStations" class="channels-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-list"></i> All Stations
+                </h2>
+            </div>
+            <div class="channels-grid" id="stationsContainer">
+                <!-- All stations will be dynamically generated -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About ChannelHub Radio</h3>
+                <p>Your ultimate destination for streaming radio stations from around the world. Enjoy a wide variety of content across multiple categories.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <a href="#">Popular</a>
+                <a href="#">News</a>
+                <a href="#">Music</a>
+                <a href="#">Talk</a>
+                <a href="#">Local</a>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <a href="#">Help Center</a>
+                <a href="#">Contact Us</a>
+                <a href="#">FAQ</a>
+                <a href="#">Report Issue</a>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <a href="#"><i class="fab fa-github"></i> GitHub</a>
+                <a href="#"><i class="fas fa-globe"></i> Website</a>
+                <a href="#"><i class="fas fa-envelope"></i> Email</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 ChannelHub. All rights reserved. This project is for demonstration purposes only.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Main Application Script
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const categoriesContainer = document.getElementById('categoriesContainer');
+            const stationsContainer = document.getElementById('stationsContainer');
+            const featuredStationsContainer = document.getElementById('featuredStationsContainer');
+            const audioPlayer = document.getElementById('audioPlayer');
+            const currentStationName = document.getElementById('currentStationName');
+            const currentStationCategory = document.getElementById('currentStationCategory');
+            const currentStationLogo = document.getElementById('currentStationLogo');
+            const defaultLogoIcon = document.getElementById('defaultLogoIcon');
+            const searchInput = document.getElementById('searchInput');
+            const playBtn = document.getElementById('playBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const totalStations = document.getElementById('totalStations');
+            const totalCategories = document.getElementById('totalCategories');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const streamStatus = document.getElementById('streamStatus');
+
+            // State variables
+            let activeCategory = 'ALL';
+            let filteredStations = [];
+            let currentPlayingStation = null;
+            let allStations = [];
+
+            // Radio station data
+            const radioData = [
+                {
+                    id: "abc",
+                    name: "ABC Radio(89.2)",
+                    logo: "https://upload.wikimedia.org/wikipedia/bn/thumb/d/d5/%E0%A6%8F%E0%A6%AC%E0%A6%BF%E0%A6%B8%E0%A6%BF_%E0%A6%B0%E0%A7%87%E0%A6%A1%E0%A6%BF%E0%A6%93%E0%A6%B0_%E0%A6%B2%E0%A7%8B%E0%A6%97%E0%A7%8B_%28%E0%A6%AA%E0%A7%81%E0%A6%B0%E0%A6%BE%E0%A6%A4%E0%A6%A8%29.svg/381px-%E0%A6%8F%E0%A6%AC%E0%A6%BF%E0%A6%B8%E0%A6%BF_%E0%A6%B0%E0%A7%87%E0%A6%A1%E0%A6%BF%E0%A6%93%E0%A6%B0_%E0%A6%B2%E0%A7%8B%E0%A6%97%E0%A7%8B_%28%E0%A6%AA%E0%A7%81%E0%A6%B0%E0%A6%BE%E0%A6%A4%E0%A6%A8%29.svg.png",
+                    category: "Popular",
+                    url: "http://node-04.zeno.fm/h7n8ug96eeruv",
+                    featured: true
+                },
+                {
+                    id: "today",
+                    name: "Radio Today(89.6)",
+                    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSwsPsZ8ydAQQ_Qq5CYuqdlhzCBze53_7NzCg&usqp=CAU",
+                    category: "News",
+                    url: "http://node-03.zeno.fm/0zha3rfq02quv",
+                    featured: true
+                },
+                {
+                    id: "betar",
+                    name: "Bangladesh Betar Dhaka",
+                    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTUmJx9jACLmDe3lkRYxo4AZcuxSuD6rIqbvw&usqp=CAU",
+                    category: "News",
+                    url: "http://as3.digitalsynapsebd.com:8263/;stream.mp3",
+                    featured: true
+                },
+                {
+                    id: "foorti",
+                    name: "Radio Foorti",
+                    logo: "https://cdn-profiles.tunein.com/s122537/images/logod.png?t=636625146120570000",
+                    category: "Music",
+                    url: "https://node-11.zeno.fm/f0bfdk2w34zuv"
+                },
+                {
+                    id: "colours",
+                    name: "Colours FM",
+                    logo: "https://en.wikipedia.org/wiki/Colours_FM#/media/File:Colours_FM_logo.png",
+                    category: "Music",
+                    url: "http://45.64.135.88:8000/stream1"
+                },
+                {
+                    id: "jagoo",
+                    name: "Jagoo FM",
+                    logo: "https://dl.dropbox.com/s/etxv1fmhxeyl3oy/RadioLive.gif",
+                    category: "Music",
+                    url: "http://128.199.184.111:12496/;stream/1"
+                },
+                {
+                    id: "fnf",
+                    name: "FnF.FM Bangla",
+                    logo: "https://static.mytuner.mobi/media/tvos_radios/mn9anbdu3mle.png",
+                    category: "Music",
+                    url: "http://eu6.fastcast4u.com:5099/;stream"
+                },
+                {
+                    id: "traffic",
+                    name: "Traffic FM",
+                    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5fsVPeMvC-Is-WajMo_pk13SBT-A7yjko0Q&s",
+                    category: "Talk",
+                    url: "http://as3.digitalsynapsebd.com:8263/;stream.mp3"
+                },
+                {
+                    id: "big",
+                    name: "Big FM",
+                    logo: "https://via.placeholder.com/100x60?text=Big+FM",
+                    category: "Music",
+                    url: "http://sc-bb.1.fm:8017/;"
+                },
+                {
+                    id: "awaj",
+                    name: "Awaj FM",
+                    logo: "https://via.placeholder.com/100x60?text=Awaj+FM",
+                    category: "Talk",
+                    url: "http://streamasiacdn.atc-labs.com/radioawaj.aac"
+                },
+                {
+                    id: "suno",
+                    name: "Suno FM 102",
+                    logo: "https://via.placeholder.com/100x60?text=Suno+FM",
+                    category: "Music",
+                    url: "http://51.255.235.165:5476/;stream.mp3"
+                }
+            ];
+
+            // Initialize the app
+            function init() {
+                // Load stations from the data
+                loadAllStations();
+                
+                updateStats();
+                renderCategories();
+                renderFeaturedStations();
+                renderStations();
+                setupEventListeners();
+            }
+
+            // Load stations from the data array
+            function loadAllStations() {
+                allStations = radioData;
+                filteredStations = [...allStations];
+            }
+
+            // Update statistics
+            function updateStats() {
+                const categories = new Set(allStations.map(station => station.category));
+                totalStations.textContent = `${allStations.length} Stations`;
+                totalCategories.textContent = `${categories.size} Categories`;
+            }
+
+            // Render category buttons
+            function renderCategories() {
+                const categories = ['ALL', ...new Set(allStations.map(station => station.category))];
+                
+                categoriesContainer.innerHTML = categories.map(category => {
+                    const icon = getCategoryIcon(category);
+                    return `
+                        <button class="category-btn ${category === 'ALL' ? 'active' : ''}" data-category="${category}">
+                            ${icon} ${category}
+                        </button>
+                    `;
+                }).join('');
+            }
+
+            // Get appropriate icon for each category
+            function getCategoryIcon(category) {
+                const icons = {
+                    'ALL': 'fas fa-globe',
+                    'Popular': 'fas fa-fire',
+                    'News': 'fas fa-newspaper',
+                    'Music': 'fas fa-music',
+                    'Talk': 'fas fa-microphone',
+                    'Local': 'fas fa-map-marker-alt'
+                };
+                
+                return `<i class="${icons[category] || 'fas fa-radio'}"></i>`;
+            }
+
+            // Render featured stations
+            function renderFeaturedStations() {
+                const featuredStations = allStations.filter(station => station.featured);
+                
+                if (featuredStations.length === 0) {
+                    // If no featured stations, show first 6 stations
+                    const displayStations = allStations.slice(0, 6);
+                    featuredStationsContainer.innerHTML = displayStations.map(station => `
+                        <div class="channel-card" data-id="${station.id}">
+                            <div class="channel-card-img">
+                                <img src="${station.logo}" alt="${station.name}" onerror="this.src='https://via.placeholder.com/100x60?text=RADIO'">
+                                <span class="live-badge">LIVE</span>
+                            </div>
+                            <div class="channel-card-content">
+                                <h3>${station.name}</h3>
+                                <p>${station.category}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    featuredStationsContainer.innerHTML = featuredStations.map(station => `
+                        <div class="channel-card" data-id="${station.id}">
+                            <div class="channel-card-img">
+                                <img src="${station.logo}" alt="${station.name}" onerror="this.src='https://via.placeholder.com/100x60?text=RADIO'">
+                                <span class="live-badge">FEATURED</span>
+                            </div>
+                            <div class="channel-card-content">
+                                <h3>${station.name}</h3>
+                                <p>${station.category}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Render stations based on active category and search
+            function renderStations() {
+                if (filteredStations.length === 0) {
+                    stationsContainer.innerHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-radio"></i>
+                            <h3>No stations found</h3>
+                            <p>Try a different search term or category</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                stationsContainer.innerHTML = filteredStations.map(station => `
+                    <div class="channel-card" data-id="${station.id}">
+                        <div class="channel-card-img">
+                            <img src="${station.logo}" alt="${station.name}" onerror="this.src='https://via.placeholder.com/100x60?text=RADIO'">
+                            ${station.featured ? '<span class="live-badge">FEATURED</span>' : '<span class="live-badge">LIVE</span>'}
+                        </div>
+                        <div class="channel-card-content">
+                            <h3>${station.name}</h3>
+                            <p>${station.category}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Filter stations by category
+            function filterByCategory(category) {
+                activeCategory = category;
+                
+                if (category === 'ALL') {
+                    filteredStations = [...allStations];
+                } else {
+                    filteredStations = allStations.filter(station => station.category === category);
+                }
+                
+                // Apply search filter if there's a search term
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                if (searchTerm) {
+                    filteredStations = filteredStations.filter(station => 
+                        station.name.toLowerCase().includes(searchTerm) || 
+                        station.category.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                renderStations();
+            }
+
+            // Setup event listeners
+            function setupEventListeners() {
+                // Category filter
+                categoriesContainer.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('category-btn') || e.target.closest('.category-btn')) {
+                        const categoryBtn = e.target.classList.contains('category-btn') ? 
+                            e.target : e.target.closest('.category-btn');
+                        
+                        // Update active category button
+                        document.querySelectorAll('.category-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        categoryBtn.classList.add('active');
+                        
+                        // Filter stations
+                        const category = categoryBtn.dataset.category;
+                        filterByCategory(category);
+                    }
+                });
+                
+                // Station selection
+                stationsContainer.addEventListener('click', (e) => {
+                    const stationCard = e.target.closest('.channel-card');
+                    if (stationCard) {
+                        const stationId = stationCard.dataset.id;
+                        const station = allStations.find(s => s.id === stationId);
+                        
+                        if (station) {
+                            playStation(station);
+                        }
+                    }
+                });
+
+                // Featured station selection
+                featuredStationsContainer.addEventListener('click', (e) => {
+                    const stationCard = e.target.closest('.channel-card');
+                    if (stationCard) {
+                        const stationId = stationCard.dataset.id;
+                        const station = allStations.find(s => s.id === stationId);
+                        
+                        if (station) {
+                            playStation(station);
+                        }
+                    }
+                });
+                
+                // Search functionality
+                searchInput.addEventListener('input', () => {
+                    const searchTerm = searchInput.value.trim().toLowerCase();
+                    
+                    if (activeCategory === 'ALL') {
+                        filteredStations = allStations.filter(station => 
+                            station.name.toLowerCase().includes(searchTerm) || 
+                            station.category.toLowerCase().includes(searchTerm)
+                        );
+                    } else {
+                        filteredStations = allStations.filter(station => 
+                            station.category === activeCategory && 
+                            (station.name.toLowerCase().includes(searchTerm) || 
+                             station.category.toLowerCase().includes(searchTerm))
+                        );
+                    }
+                    
+                    renderStations();
+                });
+
+                // Play button
+                playBtn.addEventListener('click', () => {
+                    if (currentPlayingStation) {
+                        playStation(currentPlayingStation);
+                    }
+                });
+
+                // Stop button
+                stopBtn.addEventListener('click', stopStream);
+
+                // Volume control
+                volumeSlider.addEventListener('input', () => {
+                    audioPlayer.volume = volumeSlider.value;
+                });
+
+                // Audio player events
+                audioPlayer.addEventListener('loadstart', () => {
+                    loadingIndicator.style.display = 'block';
+                    updateStreamStatus('Loading stream...');
+                });
+
+                audioPlayer.addEventListener('canplay', () => {
+                    loadingIndicator.style.display = 'none';
+                    updateStreamStatus('Ready to play');
+                });
+
+                audioPlayer.addEventListener('playing', () => {
+                    loadingIndicator.style.display = 'none';
+                    updateStreamStatus('Playing');
+                });
+
+                audioPlayer.addEventListener('waiting', () => {
+                    loadingIndicator.style.display = 'block';
+                    updateStreamStatus('Buffering...');
+                });
+
+                audioPlayer.addEventListener('error', (e) => {
+                    loadingIndicator.style.display = 'none';
+                    updateStreamStatus('Error: ' + getAudioErrorText(audioPlayer.error));
+                    console.error('Audio error:', audioPlayer.error);
+                });
+            }
+
+            // Play selected station
+            function playStation(station) {
+                currentPlayingStation = station;
+                
+                // Update station info
+                currentStationName.textContent = station.name;
+                currentStationCategory.textContent = station.category;
+                
+                if (station.logo) {
+                    currentStationLogo.src = station.logo;
+                    currentStationLogo.style.display = 'block';
+                    defaultLogoIcon.style.display = 'none';
+                } else {
+                    currentStationLogo.style.display = 'none';
+                    defaultLogoIcon.style.display = 'block';
+                }
+                
+                // Show audio player and hide placeholder
+                document.querySelector('.player-placeholder').style.display = 'none';
+                audioPlayer.style.display = 'block';
+                playBtn.style.display = 'flex';
+                stopBtn.style.display = 'flex';
+                loadingIndicator.style.display = 'block';
+                
+                // Stop any existing stream
+                stopStream();
+                
+                // Load the new stream
+                loadStream(station.url);
+                
+                // Scroll to top to show the player
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Load stream
+            function loadStream(url) {
+                updateStreamStatus('Loading stream...');
+                
+                audioPlayer.src = url;
+                audioPlayer.load();
+                audioPlayer.play().catch(e => {
+                    console.error('Auto-play failed:', e);
+                    updateStreamStatus('Click play to start stream');
+                });
+            }
+
+            // Stop the current stream
+            function stopStream() {
+                audioPlayer.pause();
+                audioPlayer.src = '';
+                audioPlayer.load();
+                
+                loadingIndicator.style.display = 'none';
+                streamStatus.style.display = 'none';
+            }
+
+            // Update stream status display
+            function updateStreamStatus(message) {
+                streamStatus.textContent = message;
+                streamStatus.style.display = 'block';
+            }
+
+            // Get readable error message from audio error code
+            function getAudioErrorText(error) {
+                if (!error) return 'Unknown error';
+                
+                switch(error.code) {
+                    case error.MEDIA_ERR_ABORTED:
+                        return 'Audio playback was aborted';
+                    case error.MEDIA_ERR_NETWORK:
+                        return 'A network error caused the audio download to fail';
+                    case error.MEDIA_ERR_DECODE:
+                        return 'The audio playback was aborted due to a corruption problem or because the audio used features your browser did not support';
+                    case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                        return 'The audio format is not supported by your browser';
+                    default:
+                        return 'An unknown error occurred';
+                }
+            }
+
+            // Initialize the app
+            init();
+        });
+    </script>
+</body>
+</html>
